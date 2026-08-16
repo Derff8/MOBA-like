@@ -14,13 +14,17 @@ public class MovableMobaController : Controller
 
     private bool _isFollowingPath = false;
 
+    private int _groundLayerMask = LayerMask.GetMask("Ground");
+
+    private int _currentCornerIndex = 0;
+
+    private float _minDistanceToStop = 0.05f;
+
     public MovableMobaController(IMovable movable, NavMeshQueryFilter queryFilter)
     {
         _movable = movable;
         _queryFilter = queryFilter;
     }
-
-    private int _groundLayerMask = LayerMask.GetMask("Ground");
 
     protected override void UpdateLogic(float deltaTime)
     {
@@ -33,12 +37,29 @@ public class MovableMobaController : Controller
     {
         if (!_isFollowingPath) return;
 
-        if (_pathToPoint.corners.Length >= 2 && NavMeshUtils.GetPathLength(_pathToPoint) > 0.5f)
+        Vector3 currentPosition = _movable.Position;
+        Vector3 targetPosition = _pathToPoint.corners[_currentCornerIndex];
+
+        Vector3 flatCurrentPosition = new Vector3(currentPosition.x, 0, currentPosition.z);
+        Vector3 flatTargetPosition = new Vector3(targetPosition.x, 0, targetPosition.z);
+
+        if (Vector3.Distance(flatCurrentPosition, flatTargetPosition) <= _minDistanceToStop)
         {
-            _movable.SetDirection(_pathToPoint.corners[1] - _pathToPoint.corners[0]);
-            return;
+            _currentCornerIndex++;
+
+            if (_currentCornerIndex >= _pathToPoint.corners.Length)
+            {
+                _isFollowingPath = false;
+                _movable.SetDirection(Vector3.zero);
+                return;
+            }
+
+            targetPosition = _pathToPoint.corners[_currentCornerIndex];
+            flatTargetPosition = new Vector3(targetPosition.x, 0, targetPosition.z);
         }
-        _isFollowingPath = false;
+
+        Vector3 direction = (flatTargetPosition - flatCurrentPosition).normalized;
+        _movable.SetDirection(direction);
     }
 
     private void GetPathToTarget()
@@ -50,8 +71,12 @@ public class MovableMobaController : Controller
             {
                 if (NavMeshUtils.TryGetPath(_movable.Position, hit.point, _queryFilter, _pathToPoint))
                 {
-                    _isFollowingPath = true;
-                    return;
+                    if (_pathToPoint.corners.Length > 1)
+                    {
+                        _isFollowingPath = true;
+                        _currentCornerIndex = 1;
+                        return;
+                    }                    
                 }
 
                 _isFollowingPath = false;

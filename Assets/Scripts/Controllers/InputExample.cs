@@ -3,23 +3,28 @@ using UnityEngine.AI;
 
 public class InputExample : MonoBehaviour
 {
-    [SerializeField] private Character _character;
+    [SerializeField] private AgentCharacter _playerCharacter;
+    [SerializeField] private AgentCharacter _enemyCharacter;
 
-    private Controller _mobaController;
+    private Controller _playerController;
+    private Controller _enemyController;
 
     private void Awake()
     {
-        NavMeshQueryFilter queryFilter = new NavMeshQueryFilter();
-        queryFilter.agentTypeID = 0;
-        queryFilter.areaMask = NavMesh.AllAreas;
+        _playerController = new AgentCharacterMobaController(_playerCharacter);
 
-        _mobaController = new CompositController(new MovableMobaController(_character, queryFilter), new AlongMovableVelocityRotatableController(_character, _character));
+        _playerController.Enable();
 
-        _mobaController.Enable();
+        IDamageble playerHealth = _playerCharacter.GetComponent<IDamageble>();
+
+        _enemyController = new AgentEnemyController(_enemyCharacter, playerHealth, 900, 2, 1, 20);
+
+        _enemyController.Enable();
     }
 
     private void Update()
     {
-        _mobaController.Update(Time.deltaTime);
+        _playerController.Update(Time.deltaTime);
+        _enemyController.Update(Time.deltaTime);
     }
 }
