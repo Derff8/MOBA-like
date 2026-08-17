@@ -6,9 +6,12 @@ using UnityEngine.AI;
 public class AgentCharacter : MonoBehaviour
 {
     private NavMeshAgent _agent;
-
     private AgentMover _mover;
     private RotationBehaviour _rotator;
+
+    [SerializeField] private MovementIndicatorExample _indicator;
+
+    [SerializeField] private CharacterView _characterView;
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotationSpeed;
@@ -40,4 +43,14 @@ public class AgentCharacter : MonoBehaviour
     public void SetRotationDirection(Vector3 inputDirection) => _rotator.SetCurrentDirection(inputDirection);
 
     public bool TryGetPath(Vector3 targetPosition, NavMeshPath pathToTarget) => NavMeshUtils.TryGetPath(_agent, targetPosition, pathToTarget);
+
+    public void SetMovementFlagTo(Vector3 hit) => _indicator.SetIndicatorTo(hit);
+
+    public void AnimateAttack()
+    {
+        if (_characterView != null)
+        {
+            _characterView.DoAttackAnimation();
+        }
+    }
 }

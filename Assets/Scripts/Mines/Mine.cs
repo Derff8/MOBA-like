@@ -7,32 +7,23 @@ public class Mine : MonoBehaviour
 {
     private readonly int _ExplosionTriggerKey = Animator.StringToHash("Explosion");
 
-    [SerializeField] private ParticleSystem _explosionEffectPrefab;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private float _damage;
-    [SerializeField] private float _radius;
+    private ParticleSystem _explosionEffectPrefab;
+    private Animator _animator;
+    private float _damage;
+    private float _radius;
 
-    [SerializeField] private float _timeToExplode = 2;
+    private float _timeToExplode;
+
     private float _timer;
 
     private SphereCollider _collider;
 
-    private bool _isActivated = false;
-
-    private void Awake()
-    {
-        _collider = GetComponent<SphereCollider>();
-        _collider.isTrigger = true;
-        _collider.radius = _radius;
-
-        _timer = _timeToExplode;
-    }
+    public bool IsActivated { get; private set; }
 
     private void Update()
     {
-        if (_isActivated)
+        if (IsActivated)
         {
-            _animator.SetTrigger(_ExplosionTriggerKey);
             _timer -= Time.deltaTime;
 
             if(_timer <= 0)
@@ -40,15 +31,34 @@ public class Mine : MonoBehaviour
         }
     }
 
+    public void Init(ParticleSystem explosionEffectPrefab, float damage, float radius, float timeToExplode)
+    {
+        _explosionEffectPrefab = explosionEffectPrefab;
+        _damage = damage;
+        _radius = radius;
+        _timeToExplode = timeToExplode;
+
+        _collider = GetComponent<SphereCollider>();
+        _animator = GetComponent<Animator>();
+
+        _collider.isTrigger = true;
+        _collider.radius = _radius;
+
+        IsActivated = false;
+
+        _timer = _timeToExplode;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (_isActivated) return;
+        if (IsActivated) return;
 
         IDamageble damageble = other.GetComponent<IDamageble>();
 
         if (damageble != null)
         {
-            _isActivated = true;
+            IsActivated = true;
+            _animator.SetTrigger(_ExplosionTriggerKey);
         }
     }
 

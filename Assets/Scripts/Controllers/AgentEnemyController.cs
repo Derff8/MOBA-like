@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -68,6 +65,7 @@ public class AgentEnemyController : Controller
 
     private void Attack()
     {
+        _character.AnimateAttack();
         _target.TakeDamage(_damage);
         _attackTimer = _timeToAttack;
     }

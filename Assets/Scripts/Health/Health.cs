@@ -28,6 +28,11 @@ public class Health : MonoBehaviour, IDamageble
         _currentHealth -= damage;
         _currentHealth = Mathf.Clamp( _currentHealth, 0, _maxHealth );
 
+        if (_currentHealth <= _maxHealth * 0.3f)
+        {
+            _characterView.SetInjuredLayerWeight(1f);
+        }
+
         if (_currentHealth == 0)
         {
             DoDieBehaviour();                       
@@ -60,4 +65,6 @@ public class Health : MonoBehaviour, IDamageble
             Destroy(gameObject, 3f);
         }
     }
+
+    
 }

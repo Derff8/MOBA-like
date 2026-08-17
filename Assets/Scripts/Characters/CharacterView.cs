@@ -8,6 +8,9 @@ public class CharacterView : MonoBehaviour
     private readonly int IsRunningKey = Animator.StringToHash("IsRunning");
     private readonly int IsTakeDamageKey = Animator.StringToHash("IsTakeDamage");
     private readonly int IsDieKey = Animator.StringToHash("IsDie");
+    private readonly int IsAttackKey = Animator.StringToHash("IsAttack");
+
+    private string _layerName = "InjuredLayer";
 
     [SerializeField] private Animator _animator;
     [SerializeField] private AgentCharacter _character;
@@ -28,6 +31,21 @@ public class CharacterView : MonoBehaviour
     public void PlayDieAnimation()
     {
         _animator.SetBool(IsDieKey, true);
+    }
+
+    public void SetInjuredLayerWeight(float weight)
+    {
+        int layerIndex = _animator.GetLayerIndex(_layerName);
+
+        if (layerIndex != -1)
+        {
+            _animator.SetLayerWeight(layerIndex, weight);
+        }
+    }
+
+    public void DoAttackAnimation()
+    {
+        _animator.SetTrigger(IsAttackKey);
     }
 
     private void StopRunning()
