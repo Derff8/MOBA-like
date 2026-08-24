@@ -6,12 +6,10 @@ public class EnemyBrain : MonoBehaviour
 {
     private AgentCharacter _character;
     private Controller _controller;
-    private Health _health;
 
     private void Awake()
     {
         _character = GetComponent<AgentCharacter>();
-        _health = GetComponent<Health>();
     }
 
     public void Init(IDamageble target, float agroRange, float minDistanceToTarget, float timeToAttack, float damage)
@@ -22,7 +20,7 @@ public class EnemyBrain : MonoBehaviour
 
     private void Update()
     {
-        if (_controller  != null && !_health.IsDead)
+        if (_controller  != null && !_character.IsDead)
             _controller.Update(Time.deltaTime);
     }
 }

@@ -55,7 +55,7 @@ public class Mine : MonoBehaviour
 
         IDamageble damageble = other.GetComponent<IDamageble>();
 
-        if (damageble != null)
+        if (damageble != null && damageble.IsDead == false)
         {
             IsActivated = true;
             _animator.SetTrigger(_ExplosionTriggerKey);

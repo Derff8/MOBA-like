@@ -6,7 +6,6 @@ public class AgentEnemyController : Controller
     private AgentCharacter _character;
 
     private IDamageble _target;
-    private Transform _targetTransform;
 
     private float _agroRange;
     private float _minDistanceToTarget;
@@ -27,7 +26,6 @@ public class AgentEnemyController : Controller
     {
         _character = character;
         _target = target;
-        _targetTransform = ((MonoBehaviour)_target).transform;
         _agroRange = agroRange;
         _minDistanceToTarget = minDistanceToTarget;
         _timeToAttack = timeToAttack;
@@ -40,7 +38,7 @@ public class AgentEnemyController : Controller
 
         _character.SetRotationDirection(_character.CurrentVelocity);
 
-        if (_character.TryGetPath(_targetTransform.position, _pathToTarget))
+        if (_character.TryGetPath(_target.transform.position, _pathToTarget))
         {
             float distanceToTarget = NavMeshUtils.GetPathLength(_pathToTarget);
 
@@ -55,7 +53,7 @@ public class AgentEnemyController : Controller
             if (InAgroRange(distanceToTarget) && EnoughCornersInPath(_pathToTarget) && AttackTimerIsUp())
             {
                 _character.ResumeMove();
-                _character.SetDestination(_targetTransform.position);
+                _character.SetDestination(_target.transform.position);
                 return;
             }
         }

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8010557976981508511}
   - component: {fileID: 6349914594330444069}
   - component: {fileID: 1404875660901895777}
-  - component: {fileID: 4825375993561458484}
   - component: {fileID: 1733603760057904969}
   - component: {fileID: 3525161562927081197}
   - component: {fileID: 4736451733671218328}
@@ -73,24 +72,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd02c6a6c0bd7ea47ac5a25aff1ea87b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indicator: {fileID: 0}
+  _characterView: {fileID: 5295832388527044992}
   _moveSpeed: 8
   _rotationSpeed: 900
---- !u!114 &4825375993561458484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113299151732199359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b420add83a293a64a97b4f5b7994675a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _characterView: {fileID: 5295832388527044992}
-  _agentCharacter: {fileID: 1404875660901895777}
-  _destroyAfterDeath: 1
-  _maxHealth: 20
+  _maxHealth: 100
+  _destroyAfterDeath: 0
 --- !u!54 &1733603760057904969
 Rigidbody:
   m_ObjectHideFlags: 0

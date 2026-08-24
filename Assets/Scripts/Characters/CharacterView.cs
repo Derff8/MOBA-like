@@ -12,6 +12,9 @@ public class CharacterView : MonoBehaviour
 
     private string _layerName = "InjuredLayer";
 
+    [SerializeField] private MovementIndicatorExample _indicator;
+    [SerializeField] private bool _showIndicator;
+
     [SerializeField] private Animator _animator;
     [SerializeField] private AgentCharacter _character;
 
@@ -46,6 +49,14 @@ public class CharacterView : MonoBehaviour
     public void DoAttackAnimation()
     {
         _animator.SetTrigger(IsAttackKey);
+    }
+
+    public void PlaceIndicator(Vector3 destination)
+    {
+        if (_showIndicator && _indicator != null)
+        {
+            _indicator.SetIndicatorTo(destination);
+        }
     }
 
     private void StopRunning()

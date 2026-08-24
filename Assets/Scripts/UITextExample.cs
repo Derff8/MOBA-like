@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class UITextExample : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private Health _healthCharater;
+    [SerializeField] private AgentCharacter _charater;
 
     private void Awake()
     {
@@ -15,6 +13,6 @@ public class UITextExample : MonoBehaviour
 
     private void Update()
     {
-        _text.text = "HP: " + _healthCharater.CurrentHealt.ToString();
+        _text.text = "HP: " + _charater.CurrentHealth.ToString();
     }
 }

@@ -18,8 +18,7 @@ public class EnemySpawner : SpawnerExample
         EnemyBrain newEnemy = spawnObject.GetComponent<EnemyBrain>();
         if (newEnemy != null)
         {
-            IDamageble playerHealth = _player.GetComponent<IDamageble>();
-            newEnemy.Init(playerHealth, _agroRange, _minDistanceToTarget, _timeToAttack, _damage);
+            newEnemy.Init(_player, _agroRange, _minDistanceToTarget, _timeToAttack, _damage);
         }        
     }
 }

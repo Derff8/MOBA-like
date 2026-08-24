@@ -1,25 +1,25 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IDamageble
+public class Health
 {
-    [SerializeField] private CharacterView _characterView;
-    [SerializeField] private AgentCharacter _agentCharacter;
+    private CharacterView _characterView;
+    private AgentCharacter _agentCharacter;
 
-    [SerializeField] private bool _destroyAfterDeath;
-
-    [SerializeField] private float _maxHealth;
+    private float _maxHealth;
 
     private float _currentHealth ;
 
-    public float CurrentHealt => _currentHealth;
-
-    public bool IsDead { get; private set; }
-
-    private void Awake()
+    public Health(CharacterView characterView, float maxHealth)
     {
+        _characterView = characterView;
+        _maxHealth = maxHealth;
         _currentHealth = _maxHealth;
     }
+
+    public float CurrentHealth => _currentHealth;
+
+    public bool IsDead { get; private set; }
 
     public void TakeDamage(float damage)
     {
@@ -33,11 +33,6 @@ public class Health : MonoBehaviour, IDamageble
             _characterView.SetInjuredLayerWeight(1f);
         }
 
-        if (_currentHealth == 0)
-        {
-            DoDieBehaviour();                       
-        }
-
         if (_characterView != null)
         {
             _characterView.TakeDamage();
@@ -46,25 +41,5 @@ public class Health : MonoBehaviour, IDamageble
         Debug.Log(_currentHealth);
     }
 
-    private void DoDieBehaviour()
-    {
-        IsDead = true;
-        
-        if (_characterView != null)
-        {
-            _characterView.PlayDieAnimation();
-        }
-        
-        if (_agentCharacter != null)
-        {
-            _agentCharacter.StopMove();
-        }
-
-        if (_destroyAfterDeath)
-        {
-            Destroy(gameObject, 3f);
-        }
-    }
-
-    
+    public void SetDeadStatus() => IsDead = true; 
 }

@@ -22,7 +22,6 @@ public class AgentCharacterMobaController : Controller
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _groundLayerMask))
             {
                 _character.SetDestination(hit.point);
-                _character.SetMovementFlagTo(hit.point);
             }
         }
     }
