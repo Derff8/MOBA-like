@@ -9,8 +9,10 @@ public class CharacterView : MonoBehaviour
     private readonly int IsTakeDamageKey = Animator.StringToHash("IsTakeDamage");
     private readonly int IsDieKey = Animator.StringToHash("IsDie");
     private readonly int IsAttackKey = Animator.StringToHash("IsAttack");
+    private readonly int InJumpProcessKey = Animator.StringToHash("InJumpProcess");
 
-    private string _layerName = "InjuredLayer";
+    private const string _injuredLayerName = "InjuredLayer";
+    private const string _baseLayerName = "Base Layer";
 
     [SerializeField] private MovementIndicatorExample _indicator;
     [SerializeField] private bool _showIndicator;
@@ -20,6 +22,8 @@ public class CharacterView : MonoBehaviour
 
     private void Update()
     {
+        _animator.SetBool(InJumpProcessKey, _character.InJumpProcess);
+
         if (_character.CurrentVelocity.magnitude > 0.05f)
             StartRunning();
         else
@@ -38,7 +42,17 @@ public class CharacterView : MonoBehaviour
 
     public void SetInjuredLayerWeight(float weight)
     {
-        int layerIndex = _animator.GetLayerIndex(_layerName);
+        SetLayerWeight(weight, _injuredLayerName);
+    }
+
+    public void SetBaseLayerWeight(float weight)
+    {
+        SetLayerWeight(weight, _baseLayerName);
+    }
+
+    private void SetLayerWeight(float weight, string layerName)
+    {
+        int layerIndex = _animator.GetLayerIndex(layerName);
 
         if (layerIndex != -1)
         {

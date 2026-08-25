@@ -1,16 +1,20 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AgentCharacter : MonoBehaviour, IDamageble
+public class AgentCharacter : MonoBehaviour, IDamageble, IHealable
 {
     private NavMeshAgent _agent;
     private AgentMover _mover;
     private RotationBehaviour _rotator;
     private Health _health;
+    private AgentJumper _jumper;
 
     [SerializeField] private MovementIndicatorExample _indicator;
 
     [SerializeField] private CharacterView _characterView;
+
+    [SerializeField] private float _jumpSpeed;
+    [SerializeField] private AnimationCurve _jumpCurve;
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotationSpeed;
@@ -20,6 +24,8 @@ public class AgentCharacter : MonoBehaviour, IDamageble
     public Vector3 CurrentVelocity => _mover.CurrentVelocity;
 
     public Quaternion CurrentRotation => _rotator.CurrentRotation;
+
+    public bool InJumpProcess => _jumper.InProcess;
 
     public bool IsDead => _health.IsDead;
 
@@ -34,6 +40,7 @@ public class AgentCharacter : MonoBehaviour, IDamageble
 
         _mover = new AgentMover(_agent, _moveSpeed);
         _rotator = new RotationBehaviour(_rotationSpeed, transform);
+        _jumper = new AgentJumper(_jumpSpeed, _agent, this, _jumpCurve);
     }
 
     private void Update()
@@ -74,6 +81,25 @@ public class AgentCharacter : MonoBehaviour, IDamageble
         if (CurrentHealth == 0)
             DoDieBehaviour();
     }
+
+    public void TakeHeal(float heal)
+    {
+        _health.IncreaseHealth(heal);
+    }
+
+    public bool IsOnNavMeshLink(out OffMeshLinkData offMeshLinkData)
+    {
+        if (_agent.isOnOffMeshLink)
+        {
+            offMeshLinkData = _agent.currentOffMeshLinkData;
+            return true;
+        }
+
+        offMeshLinkData = default(OffMeshLinkData);
+        return false;
+    }
+
+    public void Jump(OffMeshLinkData offMeshLinkData) => _jumper.Jump(offMeshLinkData);
 
     private void DoDieBehaviour()
     {

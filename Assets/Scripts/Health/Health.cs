@@ -36,9 +36,20 @@ public class Health
         if (_characterView != null)
         {
             _characterView.TakeDamage();
+        }       
+    }
+
+    public void IncreaseHealth(float heal)
+    {
+        if (IsDead) return;
+
+        _currentHealth += heal;
+        _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
+
+        if (_currentHealth > _maxHealth * 0.3f)
+        {
+            _characterView.SetBaseLayerWeight(1f);
         }
-        
-        Debug.Log(_currentHealth);
     }
 
     public void SetDeadStatus() => IsDead = true; 

@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Mine : MonoBehaviour
@@ -14,22 +12,9 @@ public class Mine : MonoBehaviour
 
     private float _timeToExplode;
 
-    private float _timer;
-
     private SphereCollider _collider;
 
     public bool IsActivated { get; private set; }
-
-    private void Update()
-    {
-        if (IsActivated)
-        {
-            _timer -= Time.deltaTime;
-
-            if(_timer <= 0)
-                Explosion();
-        }
-    }
 
     public void Init(ParticleSystem explosionEffectPrefab, float damage, float radius, float timeToExplode)
     {
@@ -45,8 +30,6 @@ public class Mine : MonoBehaviour
         _collider.radius = _radius;
 
         IsActivated = false;
-
-        _timer = _timeToExplode;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -59,7 +42,14 @@ public class Mine : MonoBehaviour
         {
             IsActivated = true;
             _animator.SetTrigger(_ExplosionTriggerKey);
+            StartCoroutine(ExplosionProcess());
         }
+    }
+
+    private IEnumerator ExplosionProcess()
+    {
+        yield return new WaitForSeconds(_timeToExplode);
+        Explosion();
     }
 
     private void Explosion()
