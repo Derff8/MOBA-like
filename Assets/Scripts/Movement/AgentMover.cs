@@ -18,8 +18,6 @@ public class AgentMover
 
     public void SetDestination(Vector3 position)
     {
-        _agent.velocity = Vector3.zero;
-
         _agent.SetDestination(position);
     }
 

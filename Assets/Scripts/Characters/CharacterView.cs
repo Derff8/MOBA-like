@@ -16,13 +16,15 @@ public class CharacterView : MonoBehaviour
 
     [SerializeField] private MovementIndicatorExample _indicator;
     [SerializeField] private bool _showIndicator;
+    [SerializeField] private bool _canJumping;
 
     [SerializeField] private Animator _animator;
     [SerializeField] private AgentCharacter _character;
 
     private void Update()
     {
-        _animator.SetBool(InJumpProcessKey, _character.InJumpProcess);
+        if (_canJumping)
+            _animator.SetBool(InJumpProcessKey, _character.InJumpProcess);
 
         if (_character.CurrentVelocity.magnitude > 0.05f)
             StartRunning();

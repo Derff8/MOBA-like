@@ -52,12 +52,12 @@ NavMeshAgent:
   avoidancePriority: 50
   m_AngularSpeed: 999
   m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
   m_AutoRepath: 0
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 3
   m_ObstacleAvoidanceType: 0
 --- !u!114 &732631509953505517
 MonoBehaviour:
@@ -73,6 +73,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _indicator: {fileID: 0}
   _characterView: {fileID: 2442953579955104788}
+  _jumpSpeed: 0
+  _jumpCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _moveSpeed: 8
   _rotationSpeed: 900
   _maxHealth: 20
@@ -240,6 +247,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37dbf0791ba6e6f4f97ec8da437b48c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _indicator: {fileID: 0}
+  _showIndicator: 0
+  _canJumping: 0
   _animator: {fileID: 4864311311484187263}
   _character: {fileID: 732631509953505517}
 --- !u!95 &4864311311484187263 stripped

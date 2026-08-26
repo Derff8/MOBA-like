@@ -52,6 +52,15 @@ public class AgentEnemyController : Controller
 
             if (InAgroRange(distanceToTarget) && EnoughCornersInPath(_pathToTarget) && AttackTimerIsUp())
             {
+                if (_pathToTarget.status == NavMeshPathStatus.PathPartial)
+                {
+                    if (distanceToTarget <= _minDistanceToTarget)
+                    {
+                        _character.StopMove();
+                        return;
+                    }
+                }
+
                 _character.ResumeMove();
                 _character.SetDestination(_target.transform.position);
                 return;
@@ -72,7 +81,15 @@ public class AgentEnemyController : Controller
 
     private bool EnoughCornersInPath(NavMeshPath pathToTarget) => pathToTarget.corners.Length >= 2;
 
-    private bool InAgroRange(float distanceToTarget) => distanceToTarget <= _agroRange;
+    private bool InAgroRange(float distanceToTarget)
+    {
+        float heightDifference = Mathf.Abs(_character.transform.position.y - _target.transform.position.y);
+        return distanceToTarget <= _agroRange && heightDifference <= 1f;
+    }
 
-    private bool IsTargetRiched(float distanceToTarget) => distanceToTarget <= _minDistanceToTarget;
+    private bool IsTargetRiched(float distanceToTarget)
+    {
+        float heightDifference = Mathf.Abs(_character.transform.position.y - _target.transform.position.y);
+        return distanceToTarget <= _minDistanceToTarget && heightDifference <= 1f;
+    }
 }
