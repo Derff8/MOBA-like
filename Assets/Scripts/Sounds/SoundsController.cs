@@ -1,50 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.UI;
 
-public class SoundsController : MonoBehaviour
+public class SoundsController
 {
-    [SerializeField] private AudioMixer _audioMixer;
+    private AudioMixer _audioMixer;
 
-    [SerializeField] private Image _buttonIcon;
-
-    private string _audioMixerKey = "MasterVolume";
+    private const string MusicKey = "MusicVolume";
+    private const string ExplosionSoundsKey = "ExplosionVolume";
 
     private float _soundsOnValue = 0f;
     private float _soundsOffValue = -80f;
 
-    private float _volume;
-
-    private bool _isMuted;
-
-    private void Awake()
+    public SoundsController(AudioMixer audioMixer)
     {
-        _isMuted = false;
+        _audioMixer = audioMixer;
     }
 
-    public void SetOnAudio()
-    {
-        if (!_isMuted)
-            return;
+    public bool IsMusicOn() => IsVolumeOn(MusicKey);
 
-        _volume = _soundsOnValue;
-           
-        _audioMixer.SetFloat(_audioMixerKey, _volume);
+    public bool IsExplosionOn() => IsVolumeOn(ExplosionSoundsKey);
 
-        _isMuted = false;
-    }
+    public void OffMusic() => OffVolume(MusicKey);
+    public void OnMusic() => OnVolume(MusicKey);
 
-    public void SetOffAudio()
-    {
-        if (_isMuted) 
-            return;
+    public void OffExplosionSounds() => OffVolume(ExplosionSoundsKey);
+    public void OnExplosionSounds() => OnVolume(ExplosionSoundsKey);
 
-        _volume = _soundsOffValue;
+    private bool IsVolumeOn(string key) => _audioMixer.GetFloat(key, out float volume) && Mathf.Abs(volume - _soundsOnValue) <= 0.01f;
 
-        _audioMixer.SetFloat(_audioMixerKey, _volume);
+    private void OnVolume(string key) => _audioMixer.SetFloat(key, _soundsOnValue);
 
-        _isMuted = true;
-    }
+    private void OffVolume(string key) => _audioMixer.SetFloat(key, _soundsOffValue);
 }

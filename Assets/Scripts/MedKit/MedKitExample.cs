@@ -7,10 +7,10 @@ public class MedKitExample: MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         IHealable character = other.GetComponent<IHealable>();
+
         if (character != null)
-        {
             character.TakeHeal(_healAmount);
-        }
+
         Destroy(gameObject);
     }
 }

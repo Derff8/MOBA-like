@@ -50,11 +50,11 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 736b85be1288b8a4f9ed7df025ced18e
-    name: Explosion
+    name: ExplosionVolume
   - guid: 0fa887f1a84e4d1488a549e097800ad2
     name: MasterVolume
   - guid: f4250f0754248f544a54bdd0e8df7079
-    name: Music
+    name: MusicVolume
   m_AudioMixerGroupViews:
   - guids:
     - cf9314c27c3b58b4eb845473711ab27d
